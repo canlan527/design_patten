@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="btn">give flower</button>
+  <script>
+    // 代理模式
+    var mrTang= {
+      sendFlower: function(target) {
+        var flower = 'sunflower'
+        target.receiveFlower(flower)
+      }
+    }
+
+    // goddess
+    var goddess = {
+      mood: null,
+      receiveFlower: function(flower) {
+        // true good false bad
+        this.createMood()
+
+        this.mood ? console.log('ok') : console.log('get out')
+      },
+      changeMood: function() {
+        this.mood = Math.random() > 0.5
+        console.log(this.mood)
+      },
+      createMood: function() {
+        this.changeMood()
+        setInterval(() => {
+          this.changeMood()
+        }, 500)
+      }
+    }
+    mrTang.sendFlower(goddess)
+  </script>
+</body>
+</html>
