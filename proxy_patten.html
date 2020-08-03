@@ -16,12 +16,28 @@
       }
     }
 
+    // 添加代理
+    var tangProxy = {
+      proxyFlower: function(target) {
+        this.listenMood(target, function() {
+          mrTang.sendFlower(target)
+        })
+      },
+      listenMood: function(target, cb) {
+        var timer = setInterval(() => {
+          if(target.mood) {
+            cb();
+          }
+        },400)
+      }
+    }
+
+
     // goddess
     var goddess = {
       mood: null,
       receiveFlower: function(flower) {
         // true good false bad
-        this.createMood()
 
         this.mood ? console.log('ok') : console.log('get out')
       },
@@ -36,7 +52,9 @@
         }, 500)
       }
     }
-    mrTang.sendFlower(goddess)
+    goddess.createMood()
+
+    tangProxy.proxyFlower(goddess)
   </script>
 </body>
 </html>
