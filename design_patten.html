@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="oBtn">login</button>
+    <script>
+        // 单例模式  保证一个类 有且仅有一个实力 并提供一个访问他的全局访问点。
+        // 目的 就是为了节约资源
+
+        /*
+            思路：通过在构造函数上 使用一个静态属性来保存 this， 然后判断 第一次new和不是第一次new的情况
+            缺点：不符合开闭原则 Test.instance 被暴露在全局，不能保证安全 --> 被人修改成Test.instance = {}
+        */
+
+        // function Test (name) {
+        //     // var this = Object.create(Test.prototype)
+        //     if(typeof Test.instance === 'object') {
+        //         return Test.instance
+        //     }
+        //     this.name = name
+        //     Test.instance = this
+        //     // return this
+        // }
+
+        // const a = new Test('one');
+        // const b = new Test()
+        // console.log(a===b)
+
+        // 改进1：
+        /*
+            通过var一个属性instance来保存this，利用函数会默认返回this的特性 重新电仪一个 Test 函数表达式 也形成了闭包
+            AO-> instance == this
+
+            缺点： 当需要给构造函数增加新的方法、属性的时候，由于返回了新的Test， 所以无法接收到一开始的prototype上的任何方法、属性
+        */
+    //    function Test (name) {
+    //     var instance = this
+    //     this.name = name
+    //     Test = function () {
+    //         return instance
+    //     }
+    //    }
+
+    //     const a = new Test('one');
+    //     const b = new Test()
+    //     const c = new Test()
+    //     Test.prototype.lastname = 'D'
+    //     console.log(a===b, b===c)
+    //     console.log(a.lastname,b.lastname, c.lastname) // undefined * 3
+
+    // 改进2：
+    /*
+        圣杯模式：为什么叫圣杯模式呢？ 基督教里说 用圣杯承圣水，可以得永生。  
+        ---那么，在js里什么是永生的呢  1.window 2.闭包
+            要么是全局变量，可以一直存在；要么是形成了闭包，内部变量被保存在了外部
+            全局变量不好，不符合开闭原则 ，容易被外部变量污染， 因此需要立即执行函数
+        由于是闭包，所以符合开闭原则，不会造成全局变量污染】
+        缺点：不通用，只针对当前Test函数
+    */
+    // var Test = (function () {
+    //     var instance;
+    //     return function (name) {
+    //         if (typeof instance === 'object') {
+    //             return instance
+    //         }
+    //         instance = this;
+    //         this.name = name;
+    //     }
+    // })()
+
+   
+    // const a = new Test('one');
+    // const b = new Test()
+    // const c = new Test()
+    // Test.prototype.lastname = 'D'
+    // console.log(a===b, b===c) // true true
+    // console.log(a.lastname,b.lastname, c.lastname) // D D D
+
+    
+    // 创建弹窗
+    // var CreateAlert = function (text) {
+    //     var oDiv = document.createElement('div')
+    //     oDiv.style.display = 'none'
+    //     oDiv.innerText = text;
+    //     document.body.appendChild(oDiv)
+    //     return oDiv
+    // }
+
+    // oBtn.onclick = function () {
+    //     var oDiv = CreateAlert('HELLO 5666')
+    //     oDiv.style.display = 'block'
+    // }
+    // 这样可以通过点击创建若干 div 但是我们的内容是一样的， 为了提升性能，改造成单例模式 （闭包）
+
+        // var singleAlert = (function () {
+        //     var oDiv = null;
+        //     return function (text) {
+        //         if(oDiv !== null) {
+        //             return oDiv
+        //         }
+        //         oDiv = document.createElement('div')
+        //         oDiv.style.display = 'none'
+        //         oDiv.innerText = text;
+        //         document.body.appendChild(oDiv)
+        //         return oDiv;
+        //     }
+        // })()
+
+
+        // oBtn.onclick = function () {
+        //     var oDiv = singleAlert('HELLO 5666')
+        //     oDiv.style.display = 'block'
+        // }
+
+
+        // 做一个一劳永逸的工具函数： 任何一个函数传进来，都把你变成一个单例
+        // 传 func 返回一个函数
+        // var getSingle = function (func) {
+        //     var result;
+        //     return function () {
+        //         if(!result) {
+        //             result = func.apply(this, arguments)
+        //         }
+        //         return result
+        //     }
+        // }
+        // var CreateAlert = function (text) {
+        //     var oDiv = document.createElement('div')
+        //     oDiv.style.display = 'none'
+        //     oDiv.innerText = text;
+        //     document.body.appendChild(oDiv)
+        //     return oDiv
+        // }
+        // var singleAlert = getSingle(CreateAlert)
+
+        // oBtn.onclick = function () {
+        //     var oDiv = singleAlert('HELLO 5666')
+        //     oDiv.style.display = 'block'
+        // }
+
+        // 代理模式
+        
+
+
+
+
+
+
+
+
+
+        
+    </script>
+</body>
+</html>
