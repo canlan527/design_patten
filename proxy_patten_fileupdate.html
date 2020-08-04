@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+    div {
+        width: 100px;
+        height: 100px;
+        border:1px solid #333;
+    }
+</style>
+<body>
+    <div id="show">里面的文字</div>
+    <button type="bg">add greenBg</button>
+    <button type="cl">add blueColor</button>
+    <button type="fw">add fontweight</button>
+    <button type="fs">add fontsize</button>
+    <button type="op">add opacity</button>
+
+    <script>
+        var oDiv = document.getElementById('show')
+        var oButtonArray = document.getElementsByTagName('button')
+        var ProxyRequest = function(func) {
+            var cache = [];
+            var timer = null;
+            return function() {
+                cache.push(this.getAttribute('type')) // 缓存每次点击的按钮type
+                clearTimeout(timer)
+                timer = setInterval(function() {
+                    // cache => changeStyle
+                    func(oDiv, cache)
+                    caches = []
+                }, 2000)
+            }
+        }
+
+        var realChangeStyle = ProxyRequest(changeStyle)
+
+        for(var i = 0; i< oButtonArray.length; i ++) {
+            oButtonArray[i].onclick = realChangeStyle;
+            // oButtonArray[i].onclick = function() {
+            //     changeStyle(oDiv, this.getAttribute('type'))
+            // }
+        }
+
+        function changeStyle(dom, typeArr) {
+            var typeObj = {
+                bg: ['backgroundColor', 'green'],
+                cl: ['color', 'blue'],
+                fw: ['fontWeight', 'bold'],
+                fs: ['fontSize', '30px'],
+                op: ['opacity', '0.3']
+            }  
+
+            if(typeArr.constructor == Array) {
+                typeArr.forEach(ele => {
+                    dom.style[typeObj[ele][0]] = typeObj[ele][1]
+                })
+            } else {
+                dom.style[typeObj[typeArr][0]] = typeObj[typeArr][1]
+            }
+        }
+
+        // changeStyle(oDiv, ['bg', 'op', 'fw'])
+
+
+    </script>
+</body>
+</html>

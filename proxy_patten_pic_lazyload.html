@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        width: 500px;
+        height: 300px;
+        border: 1px solid  #333;
+    }
+    div img {
+        width: 500px;
+        height: 300px;
+    }
+</style>
+<body>
+    
+    <div id="demo">
+        <img src="" alt="">
+    </div>
+    <button id="btn">click</button>
+    <script>
+        // 代理模式  ---  图片懒加载
+        // 预加载 -> https://xxx.zhanwei.jpg
+        // 懒加载  ->  监控真正要展示的图片内容 是否有被加载成功 https://xx.realshow.jpg
+
+        var MyImage = function(id) {
+            // this
+            var oImg = new Image()
+            this.setSrc = function(src) {
+                oImg.src = src
+            }
+            document.getElementById(id).appendChild(oImg)
+        }
+        
+
+        var ProxyImage = (function() {
+            var oMyImg = new MyImage('demo')
+            var oNewImage = new Image()
+            oNewImage.onload = function() {
+                oMyImg.setSrc(oNewImage.src)
+            }   
+
+
+            return function(occupySrc, src) {
+                oMyImg.setSrc(occupySrc)
+                oNewImage.src = src
+            }
+        })()
+
+        ProxyImage('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1596519275712&di=66856fd10e9a1fd3d845ab137543350c&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Fe%2F57c6a5df03909.jpg')
+
+
+    </script>
+</body>
+</html>

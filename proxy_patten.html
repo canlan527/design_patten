@@ -27,6 +27,7 @@
         var timer = setInterval(() => {
           if(target.mood) {
             cb();
+            clearInterval(timer)
           }
         },400)
       }
@@ -43,7 +44,7 @@
       },
       changeMood: function() {
         this.mood = Math.random() > 0.5
-        console.log(this.mood)
+        // console.log(this.mood)
       },
       createMood: function() {
         this.changeMood()
