@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  span {
+    color: brown;
+  }
+</style>
+<body>
+  <div>
+    用户名： <input type="text" id="username" name="username">
+    <span id="showUser"></span>
+    密码： <input type="password" name="password" id="password">
+    <span id="showPassword"></span>
+    <button id="submit">提交</button>
+  </div>
+
+  <script>
+    // 用户名长度不能超过四个
+    // 密码不能为空 长度不能小于6位
+
+    var flag = true
+    // 这样的代码 复用性不好 ， 扩展性不好， 可维护性也不好
+    submit.onclick = function() {
+      showUser.innerText = ''
+      showPassword.innerText = ''
+
+      if(username.value == '') {
+        flag = false
+        showUser.innerText = '用户名不能为空'
+      } else if(username.value.length > 4) {
+        flag = true
+        showUser.innerText = '用户名过长'
+
+      }
+
+      if(password.value == '') {
+        flag = false
+        showPassword.innerText = '密码不能为空'
+      } else if(password.value.length < 6) {
+        flag = false
+        showPassword.innerText = '密码长度大于6个字符'
+      }
+
+      if(flag) {
+        // 发送网络请求
+        Request();
+      }
+    }
+
+    function Request() {
+
+    }
+
+
+    // 代理模式 和策略模式 结合一下 搞定它
+    
+
+  </script>
+</body>
+</html>
