@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+    <script>
+        //装饰者模式 
+
+        // 轻便小巧灵活动态的扩展
+        // PlaneFactory提供接口
+        function PlaneFactory() {
+            this.decorate_list = []
+        }
+        // 集合所有的装饰方法
+        PlaneFactory.prototype.decorators = {
+            eatOneLife: function(obj) {
+                obj.blood += 100
+            },
+            eatTwoLife: function(obj) {
+                obj.blood += 200
+
+            },
+            eatShrinkLife: function(obj) {
+                obj.blood -= 50;
+            }
+        }
+        // 搜集对某对象的装饰描述
+        PlaneFactory.prototype.decorate = function(decorator) {
+            // 添加装饰描述
+            this.decorate_list.push(decorator)
+        }
+        // 让装饰方法作用在该对象的身上
+        PlaneFactory.prototype.update = function() {
+            for(var i = 0; i < this.decorate_list.length; i ++) {
+                this.decorators[this.decorate_list[i]] && this.decorators[this.decorate_list[i]] (this)
+            }
+        }
+        PlaneFactory.prototype.empty = function() {
+             this.decorate_list = []
+        }
+        PlaneFactory.prototype.remove = function(type) {
+            this.decorate_list = this.decorate_list.filter((ele) => {
+                return !(ele == type)
+            })
+        }
+        // 子类工厂都可以使用的公共方法
+        PlaneFactory.prototype.touch = function() {
+            this.blood -= 50;
+            if(this.blood === 0) {
+                console.log('die')
+            }
+        }
+
+
+        // 创建对象的接口
+        PlaneFactory.create = function(type) {
+            // 判定 通过 create 创建的飞机子类工厂是否存在
+            if(PlaneFactory.prototype[type] === undefined) {
+                throw 'no this constructor'
+            }
+            // 存在  ->  继承 
+            // 如果没有传进来的子类工厂没有跟当前PlaneFactory形成继承关系 就让他形成继承关系 减少计算机空间复杂度的计算
+            if(PlaneFactory.prototype[type].prototype.__proto__ !== PlaneFactory.prototype) {
+                PlaneFactory.prototype[type].prototype = new PlaneFactory()
+            }
+            var arg = [].slice.call(arguments, 1)
+            var newPlane = new PlaneFactory.prototype[type](...arg)
+            return newPlane;
+        }
+
+        // 真正定义子类工厂
+        PlaneFactory.prototype.SmallPlane = function(x, y) {
+            this.x = x;
+            this.y = y;
+            this.width = 100;
+            this.height = 100;
+            this.name = 'smallPlane'
+            this.blood = 100;
+        }
+        PlaneFactory.prototype.BigPlane = function() {
+            this.width = 200;
+            this.height = 200;
+            this.name = 'bigPlane'
+            this.blood = 200;
+        }
+        PlaneFactory.prototype.AttackPlane = function() {
+            this.width = 150;
+            this.height = 150;
+            this.name = 'attackPlane'
+            this.blood = 150;
+            this.attack = function() {
+                console.log('biu~ biu~ biu~')
+            }
+        }
+        var oSp = PlaneFactory.create('SmallPlane', 10, 20)
+        var oBp = PlaneFactory.create('BigPlane')
+        var oAp1 = PlaneFactory.create('AttackPlane')
+        var oAp2 = PlaneFactory.create('AttackPlane')
+
+
+        // 装饰者模式
+        // oAp1.decorate('eatOneLife')
+        oAp1.decorate('eatTwoLife')
+        oAp1.decorate('eatShrinkLife')
+        oAp1.remove('eatOneLife') // blood 300
+        
+        // this.decorate_list
+        /*
+        oAp2.blood
+        150
+        oAp2.update()
+        undefined
+        oAp2.blood
+        400
+        oAp1.blood
+        150
+        */
+
+
+
+
+    </script>
+</body>
+
+</html>

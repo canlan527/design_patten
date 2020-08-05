@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+
+    <script>
+        // 1.原始模式   
+        // 缺点： 不太能满足后续的需求和扩展  所以方法不可行
+        // var plane =  {
+        //     width:100,
+        //     heigh: 100,
+        //     blood: 100,
+        //     touch: function() {
+        //         if(this.blood === 0) {
+        //             console.log('die')
+        //         }
+        //         this.blood -= 50;
+        //     }
+        // }
+        // var smallPlane =  {
+        //     width:100,
+        //     heigh: 100,
+        //     blood: 100,
+        //     touch: function() {
+        //         if(this.blood === 0) {
+        //             console.log('die')
+        //         }
+        //         this.blood -= 50;
+        //     }
+        // }
+        /*
+        // 构造函数  可以通过new创建很多个飞机，但是飞机种类受限
+        function SmallPlane() {
+            this.width = 100;
+            this.height = 100;
+            this.name = 'smallPlane'
+            this.blood = 100;
+            this.touch = function () {
+                this.blood -= 50;
+                if (this.blood === 0) {
+                    console.log('die')
+                }
+            }
+
+        }
+        new SmallPlane()
+
+        function BigPlane() {
+            this.width = 200;
+            this.height = 200;
+            this.name = 'bigPlane'
+            this.blood = 200;
+            this.touch = function () {
+                this.blood -= 50;
+                if (this.blood === 0) {
+                    console.log('die')
+                }
+            }
+        }
+
+        new BigPlane()
+
+        function AttackPlane() {
+            this.width = 150;
+            this.height = 150;
+            this.name = 'attackPlane'
+            this.blood = 150;
+            this.touch = function () {
+                this.blood -= 50;
+                if (this.blood === 0) {
+                    console.log('die')
+                }
+            }
+            this.attack = function() {
+                console.log('biu~ biu~ biu~')
+            }
+        }
+
+
+
+        // 这种工厂模式也叫作简单工厂模式，PlaneFactory 函数负责搭建一个接口，接收type， 通过匹配，具体的创建某个飞机，也是由子类去做
+        // 飞机 工厂 同意管理 新增的飞机  但是这样违背了开闭原则
+        function PlaneFactory(type) {
+            var newPlane = null;
+            switch (type) {
+                case 'SmallPlane':
+                    newPlane = new SmallPlane();
+                    break;
+                case 'BigPlane':
+                    newPlane = new BigPlane();
+                    break;
+                case 'AttackPlane':
+                    newPlane = new AttackPlane();
+                    break;
+
+            }
+            newPlane.die = function() {
+                console.log('boom')
+            }
+            return newPlane
+        }
+        PlaneFactory('SmallPlane')
+        PlaneFactory('BigPlane')
+        PlaneFactory('AttackPlane')
+        */
+
+
+
+        //工厂方法模式
+
+        // 工厂方法模式就是在继承的方法上在扩展
+        // PlaneFactory提供接口
+        function PlaneFactory() {
+
+        }
+
+
+        // 子类工厂都可以使用的公共方法
+        PlaneFactory.prototype.touch = function() {
+            this.blood -= 50;
+            if(this.blood === 0) {
+                console.log('die')
+            }
+        }
+
+
+        // 创建对象的接口
+        PlaneFactory.create = function(type) {
+            // 判定 通过 create 创建的飞机子类工厂是否存在
+            if(PlaneFactory.prototype[type] === undefined) {
+                throw 'no this constructor'
+            }
+            // 存在  ->  继承 
+            // 如果没有传进来的子类工厂没有跟当前PlaneFactory形成继承关系 就让他形成继承关系 减少计算机空间复杂度的计算
+            if(PlaneFactory.prototype[type].prototype.__proto__ !== PlaneFactory.prototype) {
+                PlaneFactory.prototype[type].prototype = new PlaneFactory()
+            }
+            var arg = [].slice.call(arguments, 1)
+            var newPlane = new PlaneFactory.prototype[type](...arg)
+            return newPlane;
+        }
+
+        // 真正定义子类工厂
+        PlaneFactory.prototype.SmallPlane = function(x, y) {
+            this.x = x;
+            this.y = y;
+            this.width = 100;
+            this.height = 100;
+            this.name = 'smallPlane'
+            this.blood = 100;
+        }
+        PlaneFactory.prototype.BigPlane = function() {
+            this.width = 200;
+            this.height = 200;
+            this.name = 'bigPlane'
+            this.blood = 200;
+        }
+        PlaneFactory.prototype.AttackPlane = function() {
+            this.width = 150;
+            this.height = 150;
+            this.name = 'attackPlane'
+            this.blood = 150;
+            this.attack = function() {
+                console.log('biu~ biu~ biu~')
+            }
+        }
+        var oSp = PlaneFactory.create('SmallPlane', 10, 20)
+        var oBp = PlaneFactory.create('BigPlane')
+        var oAp = PlaneFactory.create('AttackPlane')
+
+
+
+        
+
+
+
+
+
+    </script>
+</body>
+
+</html>
