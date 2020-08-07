@@ -15,7 +15,7 @@ SquareFactory.create = function(type, x, y, color ) {
 
 SquareFactory.prototype.init = function(square, color) {
   square.viewContent.style.position = 'absolute';
-  square.viewContent.style.color = color;
+  square.viewContent.style.background = color;
   square.viewContent.style.width = square.width + 'px';
   square.viewContent.style.height = square.height + 'px';
   square.viewContent.style.left = square.x * square.width + 'px';

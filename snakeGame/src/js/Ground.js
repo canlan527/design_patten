@@ -30,6 +30,7 @@ oG.init = function() {
       // }
       // this.squareTable[i][j] = new Floor(10,20,SQUAREWIDTH,SQUAREWIDTH)
       this.squareTable[i][j] = newSquare;
+      console.log(newSquare)
       this.viewContent.appendChild(newSquare.viewContent)
     }
   }
