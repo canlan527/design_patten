@@ -16,6 +16,12 @@ function Square(x, y, width, height, dom) {
   this.height = height;
   this.viewContent = dom || document.createElement('div')
 }
+Square.prototype.upDate = function(x, y) {
+  this.x = x;
+  this.y = y;
+  this.viewContent.style.left = this.x * SQUAREWIDTH + 'px';
+  this.viewContent.style.top = this.y * SQUAREWIDTH + 'px';
+}
 Square.prototype.touch = function() {
   console.log(touch)
 }
@@ -28,3 +34,30 @@ var SnakeBody = tool.extend(Square); // 蛇身
 var Snake = tool.single();
 var Ground = tool.single(Square);// 广场
 var Game = tool.single();
+
+// 方向
+var DIRECTIONENUM = {
+  LEFT: {
+    x: -1,
+    y: 0
+  },
+  RIGHT: {
+    x: 1,
+    y: 0
+  },
+  UP: {
+    x: 0,
+    y: -1
+  },
+  DOWN: {
+    x: 0,
+    y: 1
+  }
+}
+
+// 
+var STRATEGYENUM = {
+  move: 'MOVE',
+  eat: 'EAT',
+  die: 'DIE'
+};

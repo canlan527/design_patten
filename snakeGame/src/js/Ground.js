@@ -30,7 +30,6 @@ oG.init = function() {
       // }
       // this.squareTable[i][j] = new Floor(10,20,SQUAREWIDTH,SQUAREWIDTH)
       this.squareTable[i][j] = newSquare;
-      console.log(newSquare)
       this.viewContent.appendChild(newSquare.viewContent)
     }
   }
@@ -38,4 +37,17 @@ oG.init = function() {
   // console.log(this.squareTable)
   document.body.appendChild(this.viewContent)
 }
+// 根据xy坐标清除二维数组的方块
+oG.remove = function(x, y) {
+  var square = this.squareTable[y][x];
+  this.viewContent.removeChild(square.viewContent) // 先从视觉清除
+  this.squareTable[y][x] = null; // 二维数组里清除
+}
+//根据xy坐标加入新的二维数组的方块
+oG.append = function(square) {
+  this.viewContent.appendChild(square.viewContent)
+
+  this.squareTable[square.y][square.x] = square // 数据层面加入方块
+}
+
 oG.init();
