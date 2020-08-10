@@ -38,23 +38,26 @@ oSnake.init = function(oGround) {
 
 oSnake.strategies = {
   MOVE: function(snake, square, oGround) {
-    console.log('nizou')
-    var newBody = SquareFactory.create('SnakeBody', snake.head.x, snake.head.y, 'blue')
+    var newBody = SquareFactory.create('SnakeBody', snake.head.x, snake.head.y, 'orange')
     newBody.next = snake.head.next;
     newBody.prev = null;
     newBody.next.body = newBody;
+
     oGround.remove(snake.head.x, snake.head.y);
     oGround.append(newBody)
+
     // 新建蛇头
-    var newHEAD = SquareFactory.create('SnakeHead', square.x, square.y, 'red');
-    newHEAD.next = newBody;
-    newHEAD.prev = null;
-    newBody.prev = newHEAD;
+    var newHead = SquareFactory.create('SnakeHead', square.x, square.y, 'red');
+    newHead.next = newBody;
+    newHead.prev = null;
+    newBody.prev = newHead;
 
     oGround.remove(square.x, square.y);
-    oGround.append(newHEAD)
-    snake.head = newHEAD;
+    oGround.append(newHead)
+    snake.head = newHead;
+
     // 删掉蛇尾
+    console.log(snake.tail)
     var floor = SquareFactory.create('Floor', snake.tail.x, snake.tail.y, 'tan')
     oGround.remove(snake.tail.x, snake.tail.y);
     oGround.append(floor)
@@ -74,7 +77,7 @@ oSnake.strategies = {
     
   }
 }
-
+// 做预判
 oSnake.move = function(oGround) {
   var square = oGround.squareTable[this.head.y + this.direction.y][this.head.x + this.direction.x]
   if(typeof square.touch == 'function') {

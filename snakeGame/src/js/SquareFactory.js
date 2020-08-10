@@ -39,8 +39,7 @@ SquareFactory.prototype.Floor = function(x, y, color) {
 SquareFactory.prototype.Food = function(x, y, color) {
   var food = new Food(x,y, SQUAREWIDTH, SQUAREWIDTH);
   this.init(food, color, STRATEGYENUM.eat);
-  osh.upDate(x, y)
-
+  food.upDate(x, y)
   return food;
 }
 SquareFactory.prototype.SnakeHead = function(x, y, color) {

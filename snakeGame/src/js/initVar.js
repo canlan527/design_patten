@@ -18,9 +18,9 @@ function Square(x, y, width, height, dom) {
 }
 Square.prototype.upDate = function(x, y) {
   this.x = x;
-  this.y = y;
-  this.viewContent.style.left = this.x * SQUAREWIDTH + 'px';
-  this.viewContent.style.top = this.y * SQUAREWIDTH + 'px';
+    this.y = y;
+    this.viewContent.style.left = this.x * SQUAREWIDTH + 'px';
+    this.viewContent.style.top = this.y * SQUAREWIDTH + 'px';
 }
 Square.prototype.touch = function() {
   console.log(touch)
