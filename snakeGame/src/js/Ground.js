@@ -12,16 +12,16 @@ oG.init = function() {
 
   // 生成一个二维数组
   this.squareTable = [];
-
+  // 生成方块
   for(var i = 0; i < YLEN; i++) {
     this.squareTable[i] = new Array(XLEN);
     for(var j = 0; j < XLEN; j ++) {
       var newSquare = null;
       if(i!== 0 && j!== 0 && i !== YLEN -1 && j !== XLEN -1) {
-        newSquare = SquareFactory.create('Floor', j, i,  'tan')
+        newSquare = SquareFactory.create('Floor', j, i,  'tan') // 地板
         // this.squareTable[i][j] = SquareFactory.create('Floor', j, i, SQUAREWIDTH, SQUAREWIDTH, 'tan')
       } else {
-        newSquare = SquareFactory.create('Stone', j, i, '#333')
+        newSquare = SquareFactory.create('Stone', j, i, '#333') // 围墙
       }
       // if(i==0 || j ==0 || i == YLEN -1 || j == XLEN -1) {
       //   newSquare = SquareFactory.create('Stone', j, i, '#333')

@@ -38,11 +38,10 @@ oSnake.init = function(oGround) {
 
 oSnake.strategies = {
   MOVE: function(snake, square, oGround) {
-    console.log('nizou')
-    var newBody = SquareFactory.create('SnakeBody', snake.head.x, snake.head.y, 'blue')
+    var newBody = SquareFactory.create('SnakeBody', snake.head.x, snake.head.y, 'orange')
     newBody.next = snake.head.next;
     newBody.prev = null;
-    newBody.next.body = newBody;
+    newBody.next.prev = newBody;
     oGround.remove(snake.head.x, snake.head.y);
     oGround.append(newBody)
     // 新建蛇头
@@ -82,4 +81,4 @@ oSnake.move = function(oGround) {
   }
 };
 oSnake.init(oG)
-oSnake.move(oG)
+// oSnake.move(oG)
