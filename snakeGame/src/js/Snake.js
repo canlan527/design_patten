@@ -37,12 +37,11 @@ oSnake.init = function(oGround) {
 }
 
 oSnake.strategies = {
-  MOVE: function(snake, square, oGround) {
+  MOVE: function(snake, square, oGround, fromEat) {
     var newBody = SquareFactory.create('SnakeBody', snake.head.x, snake.head.y, 'orange')
     newBody.next = snake.head.next;
     newBody.prev = null;
-    newBody.next.body = newBody;
-
+    newBody.next.prev = newBody;
     oGround.remove(snake.head.x, snake.head.y);
     oGround.append(newBody)
 
@@ -53,28 +52,32 @@ oSnake.strategies = {
     newBody.prev = newHead;
 
     oGround.remove(square.x, square.y);
-    oGround.append(newHead)
-    snake.head = newHead;
+    oGround.append(newHEAD)
+    snake.head = newHEAD;
 
-    // 删掉蛇尾
-    console.log(snake.tail)
-    var floor = SquareFactory.create('Floor', snake.tail.x, snake.tail.y, 'tan')
-    oGround.remove(snake.tail.x, snake.tail.y);
-    oGround.append(floor)
-    snake.tail = snake.tail.prev;
+    if(!fromEat) {
+      // 删掉蛇尾
+      var floor = SquareFactory.create('Floor', snake.tail.x, snake.tail.y, 'tan')
+      oGround.remove(snake.tail.x, snake.tail.y);
+      oGround.append(floor)
+      snake.tail = snake.tail.prev;
+    }
 
     // 更新
 
 
 
   },
-  EAT: function() {
+  EAT: function(snake, square, oGround) {
     console.log('eat');
-    
+    oGame.score ++;
+    this.MOVE(snake, square, oGround, true);
+    createFood(oGround, snake);
   },
   DIE: function() {
     console.log('die');
-    
+    alert('game over, 得分：'+ oGame.score);
+    oGame.over();
   }
 }
 // 做预判
@@ -84,5 +87,3 @@ oSnake.move = function(oGround) {
     this.strategies[square.touch()](this, square, oGround);
   }
 };
-oSnake.init(oG)
-oSnake.move(oG)
