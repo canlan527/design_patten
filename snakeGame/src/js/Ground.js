@@ -49,5 +49,3 @@ oG.append = function(square) {
 
   this.squareTable[square.y][square.x] = square // 数据层面加入方块
 }
-
-oG.init();
